@@ -4,9 +4,17 @@
     margin: 67px auto 60px;
 }
 
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 879px) {
     .footer {
-        width: 282px;
+        width: calc(100% - 38px);
+        max-width: 581px;
         margin: 48px auto 36px;
+    }
+}
+
+@media screen and (max-width: 618px) {
+    .footer {
+        width: calc(100% - 38px);
+        max-width: 282px;
     }
 }

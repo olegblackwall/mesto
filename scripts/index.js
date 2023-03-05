@@ -29,8 +29,8 @@ let fieldAboutself = document.querySelector('.profile__aboutself');
 
 function activePopup() {
     popup.classList.add('popup_active');
-    document.querySelector('.popup__form-name').value = profileName;
-    document.querySelector('.popup__form-aboutself').value = profileAboutself;
+    profileName.textContent = fieldName.value;
+    profileAboutself.textContent = fieldAboutself.value;
 }
 editProfile.addEventListener('click', activePopup);
 

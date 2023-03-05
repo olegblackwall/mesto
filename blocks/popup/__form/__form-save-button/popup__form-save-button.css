@@ -14,7 +14,7 @@
     opacity: .8;
 }
 
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 879px) {
     .popup__form-save-button {
         font-size: 14px;
         line-height: 17px;
