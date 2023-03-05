@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mesto</title>
+    <link rel="stylesheet" href="./pages/index.css">
+</head>
+
+<body class="page">
+    <header class="header">
+        <img src="./images/Logo-Mesto-Russia.svg" class="header__logo" alt="Логотип">
+    </header>
+
+    <main class="content">
+        <section class="profile">
+            <div class="profile__user-info">
+                <img src="./images/avatar.svg" class="profile__avatar" alt="Аватар">
+                <div class="profile__info">
+                    <h1 class="profile__name">Жак-Ив Кусто</h1>
+                    <button type="button" class="profile__edit-button"></button>
+                    <h2 class="profile__aboutself">Исследователь океана</h2>
+                </div>
+            </div>
+            <button type="button" class="profile__add-button"></button>
+        </section>
+
+        <section class="elements">
+            <article class="element">
+                <img src="./images/London.jpg" class="element__img" alt="Лондон">
+                <div class="element__info">
+                    <h2 class="element__title">Лондон</h2>
+                    <button type="button" class="element__like"></button>
+                </div>
+            </article>
+
+            <article class="element">
+                <img src="./images/Miami.jpg" class="element__img" alt="Майами">
+                <div class="element__info">
+                    <h2 class="element__title">Майами</h2>
+                    <button type="button" class="element__like"></button>
+                </div>
+            </article>
+
+            <article class="element">
+                <img src="./images/Moskow.jpg" class="element__img" alt="Москва">
+                <div class="element__info">
+                    <h2 class="element__title">Москва</h2>
+                    <button type="button" class="element__like"></button>
+                </div>
+            </article>
+
+            <article class="element">
+                <img src="./images/Peru.jpg" class="element__img" alt="Перу">
+                <div class="element__info">
+                    <h2 class="element__title">Перу</h2>
+                    <button type="button" class="element__like"></button>
+                </div>
+            </article>
+
+            <article class="element">
+                <img src="./images/Sydney.jpg" class="element__img" alt="Сидней">
+                <div class="element__info">
+                    <h2 class="element__title">Сидней</h2>
+                    <button type="button" class="element__like"></button>
+                </div>
+            </article>
+
+            <article class="element">
+                <img src="./images/Tokio.jpg" class="element__img" alt="Токио">
+                <div class="element__info">
+                    <h2 class="element__title">Токио</h2>
+                    <button type="button" class="element__like"></button>
+                </div>
+            </article>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p class="footer__copyright">&copy; 2023 Олег Кузнецов</p>
+    </footer>
+
+    <section class="popup">
+        <div class="popup__container">
+            <h2 class="popup__title">Редактировать профиль</h2>
+            <form class="popup__form" name="edit-profile-form" action="#">
+                <input type="text" class="popup__form-name">
+                <input type="text" class="popup__form-aboutself">
+                <button type="submit" class="popup__form-save-button">Сохранить</button>
+            </form>
+            <button type="button" class="popup__close-button"></button>
+        </div>
+    </section>
+
+<script src="./scripts/index.js"></script>
+</body>
+</html>
