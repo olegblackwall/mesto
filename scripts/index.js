@@ -9,8 +9,8 @@ let closePopup = document.querySelector('.popup__close-button');
 
 // Переменные сохраняющие текст в полях "Имя" и "О себе"
 
-let profileName = document.querySelector('.profile__name').textContent;
-let profileAboutself = document.querySelector('.profile__aboutself').textContent;
+let profileName = document.querySelector('.profile__name');
+let profileAboutself = document.querySelector('.profile__aboutself');
 
 // Переменные редактирования полей "Имени" и "О себе" в форме "Редактирования профиля"
 
@@ -27,19 +27,17 @@ let fieldAboutself = document.querySelector('.profile__aboutself');
 
 // Функция открывающая форму "Редактирование профиля" с сохранением текущих полей "Имя" и "О себе"
 
-function activePopup() {
-    popup.classList.add('popup_active');
-    profileName.textContent = fieldName.value;
-    profileAboutself.textContent = fieldAboutself.value;
+function openPopup() {
+    popup.classList.add('popup_opened');
+    nameForm.value = fieldName.textContent;
+    aboutselfForm.value = fieldAboutself.textContent;
 }
-editProfile.addEventListener('click', activePopup);
 
 // Функция выхода из формы "Редактирования профиля" (без сохранения)
 
 function popupExit() {
-    popup.classList.remove('popup_active');
+    popup.classList.remove('popup_opened');
 }
-closePopup.addEventListener('click', popupExit);
 
 // Функция отправки формы "Редактирования профиля"
 
@@ -47,6 +45,19 @@ function handleFormSubmit(event) {
     event.preventDefault();
     fieldName.textContent = nameForm.value;
     fieldAboutself.textContent = aboutselfForm.value;
-    popup.classList.remove('popup_active');
+    popup.classList.remove('popup_opened');
 }
+
+
+
+// Слушатель открытия формы "Редактирования профиля"
+
+editProfile.addEventListener('click', openPopup);
+
+// Слушатель выхода из формы "Редактирования профиля" (без сохранения)
+
+closePopup.addEventListener('click', popupExit);
+
+// Слушатель отправки формы "Редактирования профиля"
+
 profileForm.addEventListener('submit', handleFormSubmit);

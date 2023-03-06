@@ -1,13 +1,13 @@
-.popup__form-name {
+.popup__form-aboutself {
     font-size: 14px;
     font-weight: 400;
-    line-height: 17px;
+    line-height: 33px;
     display: block;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     border: none;
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-    margin-bottom: 30px;
     outline: none;
+    padding: 0;
 }

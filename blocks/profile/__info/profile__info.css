@@ -4,10 +4,19 @@
     grid-template-columns: auto auto;
     gap: 9px 18px;
     align-items: center;
+    max-width: 500px;
 }
 
 @media screen and (max-width: 879px) {
     .profile__info {
         gap: 8px 10px;
+        max-width: 581px;
+        margin: 0;
+    }
+}
+
+@media screen and (max-width: 618px) {
+    .profile__info {
+        max-width: 282px;
     }
 }

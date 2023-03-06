@@ -9,6 +9,7 @@
     cursor: pointer;
     border: none;
     border-radius: 2px;
+    margin: 48px auto 37px;
 }
 .popup__form-save-button:hover {
     opacity: .8;
@@ -19,6 +20,7 @@
         font-size: 14px;
         line-height: 17px;
         width: 238px;
-        height: 48px;
+        height: 46px;
+        margin: 45px auto 25px;
     }
 }
