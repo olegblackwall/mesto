@@ -15,8 +15,8 @@ let profileAboutself = document.querySelector('.profile__aboutself');
 // Переменные редактирования полей "Имени" и "О себе" в форме "Редактирования профиля"
 
 let profileForm = document.querySelector('.popup__form');
-let nameForm = document.querySelector('.popup__form_name');
-let aboutselfForm = document.querySelector('.popup__form_aboutself');
+let nameForm = document.querySelector('.popup__form-name');
+let aboutselfForm = document.querySelector('.popup__form-aboutself');
 
 // Переменные изменения "Имени" и "О себе" в профиле
 
