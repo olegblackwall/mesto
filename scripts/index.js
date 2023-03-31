@@ -93,7 +93,7 @@ const addElement = (name, link) => {
 function addCard(event) {
     event.preventDefault();
     
-    const nameAddElement = document.querySelector('.popup__input_key_name_element');
+    const nameAddElement = document.querySelector('.popup__input_key_name-element');
     const imgAddElement = document.querySelector('.popup__input_key_url-img');
 
 
