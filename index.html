@@ -25,73 +25,56 @@
             <button type="button" class="profile__add-button"></button>
         </section>
 
-        <div class="elements">
-            <article class="element">
-                <img src="./images/London.jpg" class="element__img" alt="Лондон">
-                <div class="element__info">
-                    <h2 class="element__title">Лондон</h2>
-                    <button type="button" class="element__like"></button>
-                </div>
-            </article>
-
-            <article class="element">
-                <img src="./images/Miami.jpg" class="element__img" alt="Майами">
-                <div class="element__info">
-                    <h2 class="element__title">Майами</h2>
-                    <button type="button" class="element__like"></button>
-                </div>
-            </article>
-
-            <article class="element">
-                <img src="./images/Moskow.jpg" class="element__img" alt="Москва">
-                <div class="element__info">
-                    <h2 class="element__title">Москва</h2>
-                    <button type="button" class="element__like"></button>
-                </div>
-            </article>
-
-            <article class="element">
-                <img src="./images/Peru.jpg" class="element__img" alt="Перу">
-                <div class="element__info">
-                    <h2 class="element__title">Перу</h2>
-                    <button type="button" class="element__like"></button>
-                </div>
-            </article>
-
-            <article class="element">
-                <img src="./images/Sydney.jpg" class="element__img" alt="Сидней">
-                <div class="element__info">
-                    <h2 class="element__title">Сидней</h2>
-                    <button type="button" class="element__like"></button>
-                </div>
-            </article>
-
-            <article class="element">
-                <img src="./images/Tokio.jpg" class="element__img" alt="Токио">
-                <div class="element__info">
-                    <h2 class="element__title">Токио</h2>
-                    <button type="button" class="element__like"></button>
-                </div>
-            </article>
-        </div>
+        <div class="elements"></div>
     </main>
 
     <footer class="footer">
         <p class="footer__copyright">&copy; 2023 Олег Кузнецов</p>
     </footer>
-
-    <section class="popup">
-        <div class="popup__container">
+    <section class="popup popup_edit-profile">
+        <div class="popup__container popup__container_edit-profile">
             <h2 class="popup__title">Редактировать профиль</h2>
-            <form class="popup__form" name="edit-profile-form" action="#">
+            <form class="popup__form popup__form_edit-profile" name="edit-profile-form" action="#">
                 <input type="text" class="popup__input popup__input_key_name" placeholder="Имя" name="name" required>
                 <input type="text" class="popup__input popup__input_key_aboutself" placeholder="О себе" name="aboutself" required>
-                <button type="submit" class="popup__save-button">Сохранить</button>
+                <button type="submit" class="popup__save-button popup__save-button_edit-profile">Сохранить</button>
             </form>
-            <button type="button" class="popup__close-button"></button>
+            <button type="button" class="popup__close-button popup__close-button_edit-profile"></button>
         </div>
     </section>
 
-<script src="./scripts/index.js"></script>
+    <section class="popup popup_add-element">
+        <div class="popup__container popup__container_add-element">
+            <h2 class="popup__title">Новое место</h2>
+            <form class="popup__form" name="add-element-form" action="#">
+                <input type="text" class="popup__input popup__input_key_name_element" placeholder="Название" name="title-img" required>
+                <input type="url" class="popup__input popup__input_key_url-img" placeholder="Ссылка на картинку" name="link-img" required>
+                <button type="submit" class="popup__save-button popup__save-button_add-element">Создать</button>
+            </form>
+            <button type="button" class="popup__close-button popup__close-button_add-element"></button>
+        </div>
+    </section>
+
+    <section class="popup popup_show-img popup_click-outside">
+        <div class="popup__container-img">
+            <img src="#" class="popup__img" alt="image">
+            <h2 class="popup__title-img"></h2>
+            <button type="button" class="popup__close-button popup__close-button_show-img"></button>
+        </div>
+    </section>
+
+    <template class="card">
+        <article class="element">
+            <img src="#" class="element__img element__button-img" alt="picture">
+            <div class="element__info">
+                <h2 class="element__title"></h2>
+                <button type="button" class="element__like"></button>
+            </div>
+            <button type="button" class="element__delete"></button>
+        </article>
+    </template>
+
+    <script src="./scripts/data.js"></script>
+    <script src="./scripts/index.js"></script>
 </body>
 </html>
