@@ -34,9 +34,9 @@
     <section class="popup popup_edit-profile">
         <div class="popup__container popup__container_edit-profile">
             <h2 class="popup__title">Редактировать профиль</h2>
-            <form class="popup__form popup__form_edit-profile" name="edit-profile-form" action="#">
-                <input type="text" class="popup__input popup__input_key_name" placeholder="Имя" name="name" required>
-                <input type="text" class="popup__input popup__input_key_aboutself" placeholder="О себе" name="aboutself" required>
+            <form class="popup__form" name="edit-profile-form" action="#">
+                <input type="text" class="popup__input" placeholder="Имя" name="name" required>
+                <input type="text" class="popup__input" placeholder="О себе" name="aboutself" required>
                 <button type="submit" class="popup__save-button popup__save-button_edit-profile">Сохранить</button>
             </form>
             <button type="button" class="popup__close-button popup__close-button_edit-profile"></button>
@@ -46,16 +46,16 @@
     <section class="popup popup_add-element">
         <div class="popup__container popup__container_add-element">
             <h2 class="popup__title">Новое место</h2>
-            <form class="popup__form popup__form_add-element" name="add-element-form" action="#">
-                <input type="text" class="popup__input popup__input_key_name-element" placeholder="Название" name="title-img" required>
-                <input type="url" class="popup__input popup__input_key_url-img" placeholder="Ссылка на картинку" name="link-img" required>
+            <form class="popup__form" name="add-element-form" action="#">
+                <input type="text" class="popup__input" placeholder="Название" name="title" required>
+                <input type="url" class="popup__input" placeholder="Ссылка на картинку" name="link" required>
                 <button type="submit" class="popup__save-button popup__save-button_add-element">Создать</button>
             </form>
             <button type="button" class="popup__close-button popup__close-button_add-element"></button>
         </div>
     </section>
 
-    <section class="popup popup_show-img popup_click-outside">
+    <section class="popup popup_show-img">
         <div class="popup__container-img">
             <img src="#" class="popup__img" alt="image">
             <h2 class="popup__title-img"></h2>
@@ -65,7 +65,7 @@
 
     <template class="card">
         <article class="element">
-            <img src="#" class="element__img element__button-img" alt="picture">
+            <img src="#" class="element__img" alt="picture">
             <div class="element__info">
                 <h2 class="element__title"></h2>
                 <button type="button" class="element__like"></button>

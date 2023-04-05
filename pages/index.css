@@ -42,10 +42,7 @@
 @import url(./../blocks/popup/__container/_edit-profile/popup__container_edit-profile);
 @import url(./../blocks/popup/__title/popup__title.css);
 @import url(./../blocks/popup/__form/popup__form.css);
-@import url(./../blocks/popup/__form/_edit-profile/popup__form_edit-profile.css);
 @import url(./../blocks/popup/__input/popup__input.css);
-@import url(./../blocks/popup/__input/_key/popup__input_key_name.css);
-@import url(./../blocks/popup/__input/_key/popup__input_key_aboutself.css);
 @import url(./../blocks/popup/__save-button/popup__save-button.css);
 @import url(./../blocks/popup/__save-button/_edit-profile/popup__save-button_edit-profile.css);
 @import url(./../blocks/popup/__save-button/_add-element/popup__save-button_add-element.css);
