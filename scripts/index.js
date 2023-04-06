@@ -1,3 +1,6 @@
+// Переменная попапов
+const popups = document.querySelectorAll('.popup')
+
 // Переменные открытия формы "Редактирование профиля"
 const profileEditPopup = document.querySelector('.popup_edit-profile');
 const profileEditButton = document.querySelector('.profile__edit-button');
@@ -39,7 +42,6 @@ const elementList = document.querySelector('.elements');
 // Переменная шаблона элементов
 const template = document.querySelector('.card').content;
 
-
 // Переменная попапа картинки карточки
 const showImgPopup = document.querySelector('.popup_show-img');
 const imgPopup = showImgPopup.querySelector('.popup__img');
@@ -66,16 +68,11 @@ closeButtons.forEach((button) => {
   });
 
 // Функция отправки формы "Редактирования профиля"
-function handleFormSubmit(event) {
+function handleProfileFormSubmit(event) {
     event.preventDefault();
     profileFieldName.textContent = profileNameForm.value;
     profileFieldAboutself.textContent = profileAboutselfForm.value;
     closePopup(profileEditPopup);
-}
-
-// Функция выхода из формы "Добавления элементов"
-function exitPopupAddElement() {
-    addElementPopup.classList.remove('popup_opened');
 }
 
 // Создание карточки
@@ -106,7 +103,6 @@ const createElement = (name, link) => {
     })
 
     closePopup(addElementPopup);
-    addElementForm.reset();
 
     return newElement;
 }
@@ -118,8 +114,20 @@ function addCard (name, link) {
 
 // Создание базовых шести элементов
 initialCards.forEach((card) => {
-    elementList.prepend(createElement(card.name, card.link));
+    elementList.append(createElement(card.name, card.link));
 });
+
+// Слушатель закрытия всех попапов при нажатии вне попапа
+popups.forEach((popup) => {
+    popup.addEventListener('mousedown', (evt) => {
+        if (evt.target.classList.contains('popup_opened')) {
+            closePopup(popup)
+        }
+        if (evt.target.classList.contains('popup__close')) {
+          closePopup(popup)
+        }
+    })
+})
 
 
 // ----------------------------------------------------------------------------------------
@@ -132,37 +140,13 @@ profileEditButton.addEventListener('click', () => {
     profileAboutselfForm.value = profileFieldAboutself.textContent;
 });
 
-// Слушатель выхода из формы "Редактирования профиля" (без сохранения)
-buttonClosePopupEditProfile.addEventListener('click', () => {
-    closePopup(profileEditPopup);
-});
-
-// Слушатель выхода из формы "Редактировани профиля" (без сохранения), при нажатии на зону вне попапа
-profileEditPopup.addEventListener('click', (event) => {
-    if (event.target == event.currentTarget) {
-        closePopup(profileEditPopup);
-    }
-});
-
 // Слушатель открытия формы "Добавления элементов"
 addElementButton.addEventListener('click', () => {
     openPopup(addElementPopup);
 });
 
-// Слушатель выхода из формы "Добавления карточек" (без сохранения)
-buttonClosePopupAddElement.addEventListener('click', () => {
-    closePopup(addElementPopup);
-});
-
-// Слушатель выхода из формы "Добавления карточки" (без сохранения), при нажатии на зону вне попапа
-addElementPopup.addEventListener('click', (event) => {
-    if (event.target == event.currentTarget) {
-        closePopup(addElementPopup);
-    }
-});
-
 // Слушатель отправки формы "Редактирования профиля"
-profileForm.addEventListener('submit', handleFormSubmit);
+profileForm.addEventListener('submit', handleProfileFormSubmit);
 
 
 // Слушатель добавления элемента
@@ -170,13 +154,7 @@ addElementForm.addEventListener('submit', (event) => {
     event.preventDefault();
     const newElementTitle = addElementTitle.value
     const newElementImg = addElementImg.value
+    addElementForm.reset();
 
     addCard(newElementTitle, newElementImg);
-})
-
-// Слушатель закрытия попапа с картинкой карточки, при нажатии на зону вне самой картинки
-showImgPopup.addEventListener('click', (event) => {
-    if (event.target == event.currentTarget) {
-        closePopup(showImgPopup);
-    }
 })
