@@ -102,8 +102,6 @@ const createElement = (name, link) => {
         imgPopup.alt = name;
     })
 
-    closePopup(addElementPopup);
-
     return newElement;
 }
 
@@ -123,7 +121,7 @@ popups.forEach((popup) => {
         if (evt.target.classList.contains('popup_opened')) {
             closePopup(popup)
         }
-        if (evt.target.classList.contains('popup__close')) {
+        if (evt.target.classList.contains('popup__close-button')) {
           closePopup(popup)
         }
     })
@@ -154,6 +152,8 @@ addElementForm.addEventListener('submit', (event) => {
     event.preventDefault();
     const newElementTitle = addElementTitle.value
     const newElementImg = addElementImg.value
+
+    closePopup(addElementPopup);
     addElementForm.reset();
 
     addCard(newElementTitle, newElementImg);
