@@ -48,12 +48,3 @@ const openError = (input, error, inputErrorClass, form) => {
     isValid ? button.disabled = false : button.disabled = true;
     isValid ? button.classList.remove(inactiveButtonClass) : button.classList.add(inactiveButtonClass);
   }
-
-
-
-
-// Когда идёт вызов функции func() -> смотрим где создаётся функция и как она работает
-
-// Если при вызове функции в нее приходят аргументы, значит она зависит от глобальной области видимости, или от функции которая ее вызывает 
-
-// условие ? true : false
