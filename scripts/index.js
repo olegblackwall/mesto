@@ -19,6 +19,7 @@ const profileAboutself = document.querySelector('.profile__aboutself');
 const profileForm = document.forms["edit-profile-form"];
 const profileNameForm = profileForm.elements.name;
 const profileAboutselfForm = profileForm.elements.aboutself;
+const profileFormInputs = Array.from(profileForm.querySelectorAll('.popup__input'));
 
 // Переменные изменения "Имени" и "О себе" в профиле
 const profileFieldName = document.querySelector('.profile__name');
@@ -35,6 +36,11 @@ const addElementImg = addElementForm.elements.link;
 
 // Переменная закрытия формы "Добавления элементов"
 const buttonClosePopupAddElement = document.querySelector('.popup__close-button_add-element');
+
+
+// Переменные кнопок сохранения/добавления в попапах
+const addElementSaveButton = document.querySelector('.popup__save-button_add-element')
+const editProfileSaveButton = document.querySelector('.popup__save-button_edit-profile')
 
 // Переменная для добавления базовых эелементов
 const elementList = document.querySelector('.elements');
@@ -55,11 +61,13 @@ const imgTitlePopup = showImgPopup.querySelector('.popup__title-img');
 // Функция открытия попапов
 function openPopup(popup) {
     popup.classList.add('popup_opened');
+    document.addEventListener('keydown', pushEsc);
 }
 
 // Функции закрытия попапов
 function closePopup(popup) {
     popup.classList.remove('popup_opened');
+    document.removeEventListener('keydown', pushEsc);
 }
 
 closeButtons.forEach((button) => { 
@@ -115,7 +123,7 @@ initialCards.forEach((card) => {
     elementList.append(createElement(card.name, card.link));
 });
 
-// Слушатель закрытия всех попапов при нажатии вне попапа
+// Слушатель закрытия попапа при нажатии вне попапа
 popups.forEach((popup) => {
     popup.addEventListener('mousedown', (evt) => {
         if (evt.target.classList.contains('popup_opened')) {
@@ -127,6 +135,14 @@ popups.forEach((popup) => {
     })
 })
 
+// Функция закрытия попапа при нажатии на кнопку Esc
+function pushEsc(event) {
+    if (event.key === "Escape") {
+        const closePopupEscape = document.querySelector('.popup_opened');
+        closePopup(closePopupEscape);
+    }
+}
+
 
 // ----------------------------------------------------------------------------------------
 
@@ -136,11 +152,15 @@ profileEditButton.addEventListener('click', () => {
     openPopup(profileEditPopup);
     profileNameForm.value = profileFieldName.textContent;
     profileAboutselfForm.value = profileFieldAboutself.textContent;
+    closeError(profileNameForm, 'popup__input-error_active');
+    closeError(profileAboutselfForm, 'popup__input-error_active');
+    disabledButton(editProfileSaveButton, 'popup__save-button_inactive', true);
 });
 
 // Слушатель открытия формы "Добавления элементов"
 addElementButton.addEventListener('click', () => {
     openPopup(addElementPopup);
+    disabledButton(addElementSaveButton, 'popup__save-button_inactive', false);
 });
 
 // Слушатель отправки формы "Редактирования профиля"
@@ -158,3 +178,12 @@ addElementForm.addEventListener('submit', (event) => {
 
     addCard(newElementTitle, newElementImg);
 })
+
+enableValidation({
+    formSelector: '.popup__form',
+    inputSelector: '.popup__input',
+    submitButtonSelector: '.popup__save-button',
+    inactiveButtonClass: 'popup__save-button_inactive',
+    inputErrorClass: '.popup__input_type_error',
+    errorClass: 'popup__input-error_active'
+  });
