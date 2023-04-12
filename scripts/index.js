@@ -25,33 +25,34 @@ const profileFormInputs = Array.from(profileForm.querySelectorAll('.popup__input
 const profileFieldName = document.querySelector('.profile__name');
 const profileFieldAboutself = document.querySelector('.profile__aboutself');
 
-// Переменные открытия формы "Добавления элементов"
-const addElementPopup = document.querySelector('.popup_add-element');
-const addElementButton = document.querySelector('.profile__add-button');
+// Переменная попапа  "Добавления элементов"
+const elementPopup = document.querySelector('.popup_add-element');
+
+// Переменная кнопки "Добавления элементов"
+const elementButton = document.querySelector('.profile__add-button');
 
 // Переменные формы добавления элементов
-const addElementForm = document.forms["add-element-form"];
-const addElementTitle = addElementForm.elements.title;
-const addElementImg = addElementForm.elements.link;
+const cardElementForm = document.forms["add-element-form"];
+const cardElementTitle = cardElementForm.elements.title;
+const cardElementImg = cardElementForm.elements.link;
 
 // Переменная закрытия формы "Добавления элементов"
 const buttonClosePopupAddElement = document.querySelector('.popup__close-button_add-element');
 
-
 // Переменные кнопок сохранения/добавления в попапах
-const addElementSaveButton = document.querySelector('.popup__save-button_add-element')
-const editProfileSaveButton = document.querySelector('.popup__save-button_edit-profile')
+const elementSaveButton = document.querySelector('.popup__save-button_add-element')
+const profileSaveButton = document.querySelector('.popup__save-button_edit-profile')
 
 // Переменная для добавления базовых эелементов
-const elementList = document.querySelector('.elements');
+const elementsContainer = document.querySelector('.elements');
 
 // Переменная шаблона элементов
 const template = document.querySelector('.card').content;
 
 // Переменная попапа картинки карточки
-const showImgPopup = document.querySelector('.popup_show-img');
-const imgPopup = showImgPopup.querySelector('.popup__img');
-const imgTitlePopup = showImgPopup.querySelector('.popup__title-img');
+const cardImgPopup = document.querySelector('.popup_show-img');
+const imgPopup = cardImgPopup.querySelector('.popup__img');
+const imgTitlePopup = cardImgPopup.querySelector('.popup__title-img');
 
 
 
@@ -104,7 +105,7 @@ const createElement = (name, link) => {
     })
 
     elementImg.addEventListener('click', () => {
-        openPopup(showImgPopup)
+        openPopup(cardImgPopup)
         imgPopup.src = link;
         imgTitlePopup.textContent = name;
         imgPopup.alt = name;
@@ -115,12 +116,12 @@ const createElement = (name, link) => {
 
 // Функция добавления карточки
 function addCard (name, link) {
-    elementList.prepend(createElement(name, link))
+    elementsContainer.prepend(createElement(name, link))
 }
 
 // Создание базовых шести элементов
 initialCards.forEach((card) => {
-    elementList.append(createElement(card.name, card.link));
+    elementsContainer.append(createElement(card.name, card.link));
 });
 
 // Слушатель закрытия попапа при нажатии вне попапа
@@ -154,13 +155,13 @@ profileEditButton.addEventListener('click', () => {
     profileAboutselfForm.value = profileFieldAboutself.textContent;
     closeError(profileNameForm, 'popup__input-error_active');
     closeError(profileAboutselfForm, 'popup__input-error_active');
-    disabledButton(editProfileSaveButton, 'popup__save-button_inactive', true);
+    switchButton(profileSaveButton, 'popup__save-button_inactive', true);
 });
 
 // Слушатель открытия формы "Добавления элементов"
-addElementButton.addEventListener('click', () => {
-    openPopup(addElementPopup);
-    disabledButton(addElementSaveButton, 'popup__save-button_inactive', false);
+elementButton.addEventListener('click', () => {
+    openPopup(elementPopup);
+    switchButton(elementSaveButton, 'popup__save-button_inactive', false);
 });
 
 // Слушатель отправки формы "Редактирования профиля"
@@ -168,13 +169,13 @@ profileForm.addEventListener('submit', handleProfileFormSubmit);
 
 
 // Слушатель добавления элемента
-addElementForm.addEventListener('submit', (event) => {
+cardElementForm.addEventListener('submit', (event) => {
     event.preventDefault();
-    const newElementTitle = addElementTitle.value
-    const newElementImg = addElementImg.value
+    const newElementTitle = cardElementTitle.value
+    const newElementImg = cardElementImg.value
 
-    closePopup(addElementPopup);
-    addElementForm.reset();
+    closePopup(elementPopup);
+    cardElementForm.reset();
 
     addCard(newElementTitle, newElementImg);
 })
@@ -184,6 +185,6 @@ enableValidation({
     inputSelector: '.popup__input',
     submitButtonSelector: '.popup__save-button',
     inactiveButtonClass: 'popup__save-button_inactive',
-    inputErrorClass: '.popup__input_type_error',
+    inputErrorClass: 'popup__input-red-line',
     errorClass: 'popup__input-error_active'
   });
