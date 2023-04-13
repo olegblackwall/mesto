@@ -45,6 +45,6 @@ const openError = (input, error, inputErrorClass, form) => {
 }
 
   function switchButton(button, inactiveButtonClass, isValid) {
-    isValid ? button.disabled = false : button.disabled = true;
-    isValid ? button.classList.remove(inactiveButtonClass) : button.classList.add(inactiveButtonClass);
+    button.disabled = !isValid;
+    button.classList.toggle(inactiveButtonClass, !isValid);
   }
