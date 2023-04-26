@@ -1,3 +1,6 @@
+import Card from "./Card.js";
+import FormValidator from "./FormValidator.js";
+
 // Переменная названий и адресов первых шести карточек
 const initialCards = [
     {
@@ -103,6 +106,8 @@ const object = {
 function openPopup(popup) {
     popup.classList.add('popup_opened');
     document.addEventListener('keydown', pushEsc);
+    formProfile.resetValidation();
+    formAddCard.resetValidation();
 }
 
 // Функции закрытия попапов
@@ -126,8 +131,8 @@ function handleProfileFormSubmit(event) {
 
 // Функция добавления карточки
 function addCard (name, link) {
-    const card = new Card(name, link, '.card', openPopup)
-    elementsContainer.prepend(card.createCard());
+    const card = createCard(name, link);
+    elementsContainer.prepend(card);
 }
 
 // Создание базовых шести элементов
@@ -155,6 +160,19 @@ function pushEsc(event) {
     }
 }
 
+// Функция открывает попап карточки
+function handleOpenPopup(name, link) {
+  imgPopup.src = link; 
+  imgPopup.alt = name; 
+  imgTitlePopup.textContent = name; 
+  openPopup(cardImgPopup); 
+}
+
+function createCard(name, link) {
+  const card = new Card(name, link, '.card', handleOpenPopup);
+
+  return card.createCard();
+}
 
 // ----------------------------------------------------------------------------------------
 
@@ -169,7 +187,7 @@ profileEditButton.addEventListener('click', () => {
 // Слушатель открытия формы "Добавления элементов"
 elementButton.addEventListener('click', () => {
     openPopup(elementPopup);
-    formAddCard._switchButton(false);
+    formAddCard.switchButton(false);
 });
 
 // Слушатель отправки формы "Редактирования профиля"
