@@ -1,3 +1,31 @@
+// Переменная названий и адресов первых шести карточек
+const initialCards = [
+    {
+      name: 'Лондон',
+      link: 'https://images.unsplash.com/photo-1502700559166-5792585222ef?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1852&q=80'
+    },
+    {
+      name: 'Майами',
+      link: 'https://images.unsplash.com/photo-1563792137260-9b578c20677e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3024&q=80'
+    },
+    {
+      name: 'Москва',
+      link: 'https://images.unsplash.com/photo-1544987185-101082cca5de?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2000&q=80'
+    },
+    {
+      name: 'Перу',
+      link: 'https://images.unsplash.com/photo-1526697675318-89790adec369?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3024&q=80'
+    },
+    {
+      name: 'Сидней',
+      link: 'https://images.unsplash.com/photo-1590716209211-ea74d5f63573?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3024&q=80'
+    },
+    {
+      name: 'Токио',
+      link: 'https://images.unsplash.com/photo-1578593050839-28efab21e431?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3162&q=80'
+    }
+  ];
+
 // Переменная попапов
 const popups = document.querySelectorAll('.popup')
 
@@ -54,7 +82,19 @@ const cardImgPopup = document.querySelector('.popup_show-img');
 const imgPopup = cardImgPopup.querySelector('.popup__img');
 const imgTitlePopup = cardImgPopup.querySelector('.popup__title-img');
 
+// Переменная включающая в себя объект с параметрами
+const object = {
+    formSelector: '.popup__form',
+    inputSelector: '.popup__input',
+    submitButtonSelector: '.popup__save-button',
+    inactiveButtonClass: 'popup__save-button_inactive',
+    inputErrorClass: 'popup__input-red-line',
+    errorClass: 'popup__input-error_active'
+  }
 
+//   Два экземпляра класса: формы Профиля и формы Добавления карточки
+  const formProfile = new FormValidator(object, profileForm);
+  const formAddCard = new FormValidator(object, cardElementForm);
 
 // ----------------------------------------------------------------------------------------
 
@@ -84,44 +124,15 @@ function handleProfileFormSubmit(event) {
     closePopup(profileEditPopup);
 }
 
-// Создание карточки
-const createElement = (name, link) => {
-    const newElement = template.querySelector('.element').cloneNode(true);
-    const elementTitle = newElement.querySelector('.element__title');
-    const elementImg = newElement.querySelector('.element__img');
-    const buttonDeleteCard = newElement.querySelector('.element__delete');
-    const like = newElement.querySelector('.element__like');
-
-    elementTitle.textContent = name;
-    elementImg.src = link;
-    elementImg.alt = name;
-
-    buttonDeleteCard.addEventListener('click', () => {
-        newElement.remove()
-    })
-
-    like.addEventListener('click', () => {
-        like.classList.toggle('element__like_active')
-    })
-
-    elementImg.addEventListener('click', () => {
-        openPopup(cardImgPopup)
-        imgPopup.src = link;
-        imgTitlePopup.textContent = name;
-        imgPopup.alt = name;
-    })
-
-    return newElement;
-}
-
 // Функция добавления карточки
 function addCard (name, link) {
-    elementsContainer.prepend(createElement(name, link))
+    const card = new Card(name, link, '.card', openPopup)
+    elementsContainer.prepend(card.createCard());
 }
 
 // Создание базовых шести элементов
-initialCards.forEach((card) => {
-    elementsContainer.append(createElement(card.name, card.link));
+initialCards.reverse().forEach((data) => {
+    addCard(data.name, data.link);
 });
 
 // Слушатель закрытия попапа при нажатии вне попапа
@@ -153,15 +164,12 @@ profileEditButton.addEventListener('click', () => {
     openPopup(profileEditPopup);
     profileNameForm.value = profileFieldName.textContent;
     profileAboutselfForm.value = profileFieldAboutself.textContent;
-    closeError(profileNameForm, 'popup__input-error_active');
-    closeError(profileAboutselfForm, 'popup__input-error_active');
-    switchButton(profileSaveButton, 'popup__save-button_inactive', true);
 });
 
 // Слушатель открытия формы "Добавления элементов"
 elementButton.addEventListener('click', () => {
     openPopup(elementPopup);
-    switchButton(elementSaveButton, 'popup__save-button_inactive', false);
+    formAddCard._switchButton(false);
 });
 
 // Слушатель отправки формы "Редактирования профиля"
@@ -180,11 +188,6 @@ cardElementForm.addEventListener('submit', (event) => {
     addCard(newElementTitle, newElementImg);
 })
 
-enableValidation({
-    formSelector: '.popup__form',
-    inputSelector: '.popup__input',
-    submitButtonSelector: '.popup__save-button',
-    inactiveButtonClass: 'popup__save-button_inactive',
-    inputErrorClass: 'popup__input-red-line',
-    errorClass: 'popup__input-error_active'
-  });
+// Обращение к свойстам экземпляров класса
+formProfile.enableValidation();
+formAddCard.enableValidation();
