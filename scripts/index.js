@@ -106,8 +106,6 @@ const object = {
 function openPopup(popup) {
     popup.classList.add('popup_opened');
     document.addEventListener('keydown', pushEsc);
-    formProfile.resetValidation();
-    formAddCard.resetValidation();
 }
 
 // Функции закрытия попапов
@@ -182,12 +180,14 @@ profileEditButton.addEventListener('click', () => {
     openPopup(profileEditPopup);
     profileNameForm.value = profileFieldName.textContent;
     profileAboutselfForm.value = profileFieldAboutself.textContent;
+    formProfile.resetValidation();
 });
 
 // Слушатель открытия формы "Добавления элементов"
 elementButton.addEventListener('click', () => {
     openPopup(elementPopup);
     formAddCard.switchButton(false);
+    formAddCard.resetValidation();
 });
 
 // Слушатель отправки формы "Редактирования профиля"
