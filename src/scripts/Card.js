@@ -1,5 +1,5 @@
 export default class Card {
-    constructor(name, link, template, handleOpenPopup) {
+    constructor(name, link, template, handleCardClick) {
         this.name = name;
         this.link = link;
         this.element = document.querySelector(template).content.querySelector('.element').cloneNode(true);
@@ -7,10 +7,7 @@ export default class Card {
         this.cardImg = this.element.querySelector('.element__img');
         this.buttonCardDelete = this.element.querySelector('.element__delete');
         this.like = this.element.querySelector('.element__like');
-        this.handleOpenPopup = handleOpenPopup;
-        this.cardImgPopup = document.querySelector('.popup_show-img');
-        this.imgPopup = this.cardImgPopup.querySelector('.popup__img');
-        this.imgTitlePopup = this.cardImgPopup.querySelector('.popup__title-img');
+        this.handleCardClick = handleCardClick;
     }
 
     createCard() {    
@@ -32,7 +29,7 @@ export default class Card {
     }
 
     _openPopupListener() {
-            this.handleOpenPopup(this.name, this.link)
+            this.handleCardClick(this.name, this.link)
     }
 
     _setEventListeners() {

@@ -1,31 +1,48 @@
-import Card from "./Card.js";
-import FormValidator from "./FormValidator.js";
+import './pages/index.css';
 
-// Переменная названий и адресов первых шести карточек
+import londonImage from './images/London.jpg';
+import miamiImage from './images/Miami.jpg';
+import moscowImage from './images/Moskow.jpg';
+import peruImage from './images/Peru.jpg';
+import sydneyImage from './images/Sydney.jpg';
+import tokioImage from './images/Tokio.jpg';
+
+import Card from "./scripts/Card.js";
+import Section from "./scripts/Section.js";
+import FormValidator from "./scripts/FormValidator.js";
+import PopupWithImage from "./scripts/PopupWithImage.js";
+import PopupWithForm from "./scripts/PopupWithForm.js";
+import UserInfo from "./scripts/UserInfo.js";
+
+const numbers = [2, 3, 5];
+
+const doubledNumbers = numbers.map(number => number * 2);
+
+
 const initialCards = [
     {
       name: 'Лондон',
-      link: 'https://images.unsplash.com/photo-1502700559166-5792585222ef?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1852&q=80'
+      link: londonImage
     },
     {
       name: 'Майами',
-      link: 'https://images.unsplash.com/photo-1563792137260-9b578c20677e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3024&q=80'
+      link: miamiImage
     },
     {
       name: 'Москва',
-      link: 'https://images.unsplash.com/photo-1544987185-101082cca5de?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2000&q=80'
+      link: moscowImage
     },
     {
       name: 'Перу',
-      link: 'https://images.unsplash.com/photo-1526697675318-89790adec369?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3024&q=80'
+      link: peruImage
     },
     {
       name: 'Сидней',
-      link: 'https://images.unsplash.com/photo-1590716209211-ea74d5f63573?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3024&q=80'
+      link: sydneyImage 
     },
     {
       name: 'Токио',
-      link: 'https://images.unsplash.com/photo-1578593050839-28efab21e431?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3162&q=80'
+      link: tokioImage
     }
   ];
 
@@ -99,19 +116,42 @@ const object = {
   const formProfile = new FormValidator(object, profileForm);
   const formAddCard = new FormValidator(object, cardElementForm);
 
+  const section = new Section({items: initialCards, renderer: (item) => {addCard(item.name, item.link)}}, '.elements');
+  section.renderItems();
+
+  const userInfo = new UserInfo({nameSelector: '.profile__name', aboutSelector: '.profile__aboutself'});
+
+  const popupWithImage = new PopupWithImage('.popup_show-img');
+  const popupWithFormProfile = new PopupWithForm(
+    '.popup_edit-profile',
+    { handleFormSubmit: (formValues) => {
+      userInfo.setUserInfo(formValues);
+      popupWithFormProfile.close();
+      } 
+    });
+  popupWithFormProfile.setEventListeners();
+
+  const popupWithFormAddCard = new PopupWithForm('.popup_add-element', { handleFormSubmit: (formValues) => {
+    section.addItem(createCard(formValues.title, formValues.link));
+    popupWithFormAddCard.close();
+    } 
+  });
+  popupWithFormAddCard.setEventListeners();
+
+
 // ----------------------------------------------------------------------------------------
 
 
 // Функция открытия попапов
 function openPopup(popup) {
     popup.classList.add('popup_opened');
-    document.addEventListener('keydown', pushEsc);
+    document.addEventListener('keydown', handleEscClose);
 }
 
 // Функции закрытия попапов
 function closePopup(popup) {
     popup.classList.remove('popup_opened');
-    document.removeEventListener('keydown', pushEsc);
+    document.removeEventListener('keydown', handleEscClose);
 }
 
 closeButtons.forEach((button) => { 
@@ -119,24 +159,11 @@ closeButtons.forEach((button) => {
     button.addEventListener('click', () => closePopup(popup));
   });
 
-// Функция отправки формы "Редактирования профиля"
-function handleProfileFormSubmit(event) {
-    event.preventDefault();
-    profileFieldName.textContent = profileNameForm.value;
-    profileFieldAboutself.textContent = profileAboutselfForm.value;
-    closePopup(profileEditPopup);
-}
-
 // Функция добавления карточки
 function addCard (name, link) {
     const card = createCard(name, link);
     elementsContainer.prepend(card);
 }
-
-// Создание базовых шести элементов
-initialCards.reverse().forEach((data) => {
-    addCard(data.name, data.link);
-});
 
 // Слушатель закрытия попапа при нажатии вне попапа
 popups.forEach((popup) => {
@@ -151,7 +178,7 @@ popups.forEach((popup) => {
 })
 
 // Функция закрытия попапа при нажатии на кнопку Esc
-function pushEsc(event) {
+function handleEscClose(event) {
     if (event.key === "Escape") {
         const closePopupEscape = document.querySelector('.popup_opened');
         closePopup(closePopupEscape);
@@ -163,7 +190,7 @@ function handleOpenPopup(name, link) {
   imgPopup.src = link; 
   imgPopup.alt = name; 
   imgTitlePopup.textContent = name; 
-  openPopup(cardImgPopup); 
+  popupWithImage.open(name, link);
 }
 
 function createCard(name, link) {
@@ -189,22 +216,6 @@ elementButton.addEventListener('click', () => {
     formAddCard.switchButton(false);
     formAddCard.resetValidation();
 });
-
-// Слушатель отправки формы "Редактирования профиля"
-profileForm.addEventListener('submit', handleProfileFormSubmit);
-
-
-// Слушатель добавления элемента
-cardElementForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const newElementTitle = cardElementTitle.value
-    const newElementImg = cardElementImg.value
-
-    closePopup(elementPopup);
-    cardElementForm.reset();
-
-    addCard(newElementTitle, newElementImg);
-})
 
 // Обращение к свойстам экземпляров класса
 formProfile.enableValidation();
