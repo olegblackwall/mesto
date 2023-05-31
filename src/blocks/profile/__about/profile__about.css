@@ -1,4 +1,4 @@
-.profile__aboutself {
+.profile__about {
     font-size: 18px;
     font-weight: 400;
     line-height: 22px;
@@ -9,7 +9,7 @@
 }
 
 @media screen and (max-width: 879px) {
-    .profile__aboutself {
+    .profile__about {
         font-size: 14px;
         line-height: 17px;
         padding-left: 16px;

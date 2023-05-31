@@ -1,57 +1,26 @@
 import './pages/index.css';
 
-import londonImage from './images/London.jpg';
-import miamiImage from './images/Miami.jpg';
-import moscowImage from './images/Moskow.jpg';
-import peruImage from './images/Peru.jpg';
-import sydneyImage from './images/Sydney.jpg';
-import tokioImage from './images/Tokio.jpg';
+import Card from "./components/Card.js";
+import Section from "./components/Section.js";
+import FormValidator from "./components/FormValidator.js";
+import PopupWithImage from "./components/PopupWithImage.js";
+import PopupWithForm from "./components/PopupWithForm.js";
+import UserInfo from "./components/UserInfo.js";
 
-import Card from "./scripts/Card.js";
-import Section from "./scripts/Section.js";
-import FormValidator from "./scripts/FormValidator.js";
-import PopupWithImage from "./scripts/PopupWithImage.js";
-import PopupWithForm from "./scripts/PopupWithForm.js";
-import UserInfo from "./scripts/UserInfo.js";
+import {api} from "./utils/Api.js";
+import PopupWithConfirm from './components/PopupWithConfirm';
 
-
-const initialCards = [
-    {
-      name: 'Лондон',
-      link: londonImage
-    },
-    {
-      name: 'Майами',
-      link: miamiImage
-    },
-    {
-      name: 'Москва',
-      link: moscowImage
-    },
-    {
-      name: 'Перу',
-      link: peruImage
-    },
-    {
-      name: 'Сидней',
-      link: sydneyImage 
-    },
-    {
-      name: 'Токио',
-      link: tokioImage
-    }
-  ];
-
+// Переменная кнопки редактирования профиля
 const profileEditButton = document.querySelector('.profile__edit-button');
 
 // Переменные редактирования полей "Имени" и "О себе" в форме "Редактирования профиля"
 const profileForm = document.forms["edit-profile-form"];
 const profileNameForm = profileForm.elements.name;
-const profileAboutselfForm = profileForm.elements.aboutself;
+const profileAboutForm = profileForm.elements.about;
 
 // Переменные изменения "Имени" и "О себе" в профиле
 const profileFieldName = document.querySelector('.profile__name');
-const profileFieldAboutself = document.querySelector('.profile__aboutself');
+const profileFieldAbout = document.querySelector('.profile__about');
 
 // Переменная кнопки "Добавления элементов"
 const elementButton = document.querySelector('.profile__add-button');
@@ -63,6 +32,11 @@ const cardElementForm = document.forms["add-element-form"];
 const cardImgPopup = document.querySelector('.popup_show-img');
 const imgPopup = cardImgPopup.querySelector('.popup__img');
 const imgTitlePopup = cardImgPopup.querySelector('.popup__title-img');
+
+// Переменная кнопки открытия попапа "Изменения аватара"
+const avatarEditButton = document.querySelector('.profile__avatar-button');
+
+const avatarForm = document.forms["avatar-form"];
 
 // Переменная включающая в себя объект с параметрами
 const object = {
@@ -77,30 +51,95 @@ const object = {
 //   Два экземпляра класса: формы Профиля и формы Добавления карточки
   const formProfile = new FormValidator(object, profileForm);
   const formAddCard = new FormValidator(object, cardElementForm);
+  const formAvatar = new FormValidator(object, avatarForm);
 
-  const section = new Section({items: initialCards, renderer: (item) => {section.addItem(createCard(item.name, item.link))}}, '.elements');
-  section.renderItems();
+  const section = new Section({renderer: (item) => {section.addItem(createCard(item.name, item.link, item.likes, item._id, setLike, deleteLike, item.owner, deleteCard))}}, '.elements');
 
-  const userInfo = new UserInfo({nameSelector: '.profile__name', aboutSelector: '.profile__aboutself'});
+  api.getInitialCards()
+  .then((result) => {
+    section.renderItems(result);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
+  const userInfo = new UserInfo({nameSelector: '.profile__name', aboutSelector: '.profile__about', avatarSelector: '.profile__avatar'});
 
   const popupWithImage = new PopupWithImage('.popup_show-img');
   popupWithImage.setEventListeners();
 
-  const popupWithFormProfile = new PopupWithForm(
-    '.popup_edit-profile',
-    { handleFormSubmit: (formValues) => {
-      userInfo.setUserInfo(formValues);
+  const popupWithFormProfile = new PopupWithForm('.popup_edit-profile', { handleFormSubmit: (formValues, saveButton) => {
+
       popupWithFormProfile.close();
+      
+      console.log(formValues);
+      saveButton.textContent = 'Сохранение...';
+
+      api.editProfile(formValues)
+      .then((result) => {
+        userInfo.setUserInfo(result);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        saveButton.textContent = 'Сохранить';
+      })
+      
       } 
     });
   popupWithFormProfile.setEventListeners();
 
-  const popupWithFormAddCard = new PopupWithForm('.popup_add-element', { handleFormSubmit: (formValues) => {
-    section.addItem(createCard(formValues.title, formValues.link));
+  api.getUserInfo()
+  .then((result) => {
+    userInfo.setUserInfo(result);
+    userInfo.setAvatar(result);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
+
+
+  const popupWithFormAddCard = new PopupWithForm('.popup_add-element', { handleFormSubmit: (formValues, saveButton) => {
+    saveButton.textContent = 'Создание...';
+
+    api.postCard(formValues, saveButton)
+    .then((result) => {
+      section.addItem(createCard(result.name, result.link, result.likes, result._id, setLike, deleteLike, result.owner, deleteCard));
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      saveButton.textContent = 'Создать';
+    })
+
     popupWithFormAddCard.close();
     } 
   });
   popupWithFormAddCard.setEventListeners();
+
+  const editAvatar = new PopupWithForm('.popup_avatar', { handleFormSubmit: (formValues, saveButton) => {
+    saveButton.textContent = 'Сохранение...';
+    api.editAvatar(formValues)
+    .then((result) => {
+      // console.log(result);
+      userInfo.setAvatar(result);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      saveButton.textContent = 'Сохранить';
+    })
+
+    editAvatar.close();
+  } });
+  editAvatar.setEventListeners();
+
+  const confirmPopup = new PopupWithConfirm('.popup_confirm');
+  confirmPopup.setEventListeners();
 
 
 // ----------------------------------------------------------------------------------------
@@ -114,11 +153,46 @@ function handleOpenPopup(name, link) {
   popupWithImage.open(name, link);
 }
 
-function createCard(name, link) {
-  const card = new Card(name, link, '.card', handleOpenPopup);
+function setLike(_id) {
+  return api.setLike(_id)
+  .then((result) => {
+    return result;
+  })
+  .catch((err) => {
+    console.log(err);
+  }); 
+}
+
+function deleteLike(_id) {
+  return api.deleteLike(_id)
+  .then((result) => {
+    return result;
+  })
+  .catch((err) => {
+    console.log(err);
+  }); 
+}
+
+function createCard(name, link, likes, _id, setLike, deleteLike, owner) {
+  const card = new Card(name, link, '.card', handleOpenPopup, likes, _id, setLike, deleteLike, owner, deleteCard);
 
   return card.createCard();
 }
+
+function deleteCard(_id, card) {
+    confirmPopup.open(); 
+    confirmPopup.getSubmitter(() => { 
+        api.deleteCard(_id) 
+        .then(res => { 
+            card.remove(); 
+            confirmPopup.close(); 
+        }) 
+        .catch(err => { 
+            console.log(err); 
+        }); 
+    });
+}
+
 
 // ----------------------------------------------------------------------------------------
 
@@ -127,7 +201,7 @@ function createCard(name, link) {
 profileEditButton.addEventListener('click', () => {
     popupWithFormProfile.open();
     profileNameForm.value = profileFieldName.textContent;
-    profileAboutselfForm.value = profileFieldAboutself.textContent;
+    profileAboutForm.value = profileFieldAbout.textContent;
     formProfile.resetValidation();
 });
 
@@ -138,6 +212,14 @@ elementButton.addEventListener('click', () => {
     formAddCard.resetValidation();
 });
 
+avatarEditButton.addEventListener('click', () => {
+  editAvatar.open();
+  formAvatar.switchButton(false);
+  formAvatar.resetValidation();
+});
+
+
 // Обращение к свойстам экземпляров класса
 formProfile.enableValidation();
 formAddCard.enableValidation();
+formAvatar.enableValidation();
