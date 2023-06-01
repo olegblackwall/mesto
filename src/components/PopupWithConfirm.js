@@ -10,13 +10,11 @@ class PopupWithConfirm extends Popup {
     super.setEventListeners();
     this.submitButton.addEventListener('click', (event) => {
       event.preventDefault();
-      console.log(this._submitter)
       this._submitter();
     });
   }
 
-  getSubmitter(_submitter) { 
-    console.log('отрабатывает getSubmitter PWC')
+  setSubmitter(_submitter) { 
     this._submitter = _submitter; 
 }
 }

@@ -8,13 +8,8 @@ class Api {
         return fetch(`${this.baseUrl}/cards`, {
           headers: this.headers
         })
-          .then(res => {
-            if (res.ok) {
-              return res.json();
-            }
+        .then(this._checkResponse);
 
-            return Promise.reject(`Ошибка: ${res.status}`);
-          });
       }
   
     editProfile(formValues) {
@@ -25,26 +20,16 @@ class Api {
             name: formValues.name,
             about: formValues.about})
         })
-          .then(res => {
-            if (res.ok) {
-              return res.json();
-            }
+        .then(this._checkResponse);
 
-            return Promise.reject(`Ошибка: ${res.status}`);
-          });
       }
 
     getUserInfo() {
       return fetch(`${this.baseUrl}/users/me`, {
         headers: this.headers
       })
-        .then(res => {
-          if (res.ok) {
-            return res.json();
-          }
+      .then(this._checkResponse);
 
-          return Promise.reject(`Ошибка: ${res.status}`);
-        });
     }
 
     editAvatar({ avatar }) {
@@ -55,13 +40,8 @@ class Api {
           avatar: avatar
         })
       })
-        .then(res => {
-          if (res.ok) {
-            return res.json();
-          }
+      .then(this._checkResponse);
 
-          return Promise.reject(`Ошибка: ${res.status}`);
-        });
     }
 
     postCard({ name, link }) {
@@ -73,14 +53,8 @@ class Api {
           link: link
           })
       })
-        .then(res => {
-          // saveButton.textContent = 'Создание...';
-          if (res.ok) {
-            return res.json();
-          }
+      .then(this._checkResponse);
 
-          return Promise.reject(`Ошибка: ${res.status}`);
-        });
     }
     
     setLike(_id) {
@@ -88,13 +62,8 @@ class Api {
         method: 'PUT',
         headers: this.headers
       })
-        .then(res => {
-          if (res.ok) {
-            return res.json();
-          }
+      .then(this._checkResponse);
 
-          return Promise.reject(`Ошибка: ${res.status}`);
-        });
     }
 
     deleteLike(_id) {
@@ -102,13 +71,8 @@ class Api {
         method: 'DELETE',
         headers: this.headers
       })
-        .then(res => {
-          if (res.ok) {
-            return res.json();
-          }
+        .then(this._checkResponse);
 
-          return Promise.reject(`Ошибка: ${res.status}`);
-        });
     }
 
     deleteCard(_id) {
@@ -116,15 +80,16 @@ class Api {
         method: 'DELETE',
         headers: this.headers
       })
-        .then(res => {
-          if (res.ok) {
-            return res.json();
-          }
-
-          return Promise.reject(`Ошибка: ${res.status}`);
-        });
+        .then(this._checkResponse);
     }
 
+    _checkResponse(res) {
+      if (res.ok) {
+        return res.json();
+      }
+
+      return Promise.reject(`Ошибка: ${res.status}`);
+    }
     
   }
   

@@ -1,7 +1,7 @@
 // рецепт
 
 export default class Card {
-    constructor(name, link, template, handleCardClick, likes, index, setLike, deleteLike, owner, deleteCard) {
+    constructor(name, link, template, handleCardClick, likes, index, setLike, deleteLike, owner, deleteCard, { _id }) {
         this.name = name;
         this.link = link;
         this.likes = likes;
@@ -15,7 +15,7 @@ export default class Card {
         this.id = index;
         this.setLike = setLike;
         this.deleteLike = deleteLike;
-        this.myId = '90a7a11d7d79e5437aca9c94';
+        this.myId = _id;
         this.owner = owner._id;
         this.deleteCard = deleteCard;
     }
